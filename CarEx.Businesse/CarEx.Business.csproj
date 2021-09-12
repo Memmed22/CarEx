@@ -6,4 +6,9 @@
     <RootNamespace>CarEx.Business</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarEx.Core\CarEx.Core.csproj" />
+    <ProjectReference Include="..\CarEx.Data\CarEx.Data.csproj" />
+  </ItemGroup>
+
 </Project>
