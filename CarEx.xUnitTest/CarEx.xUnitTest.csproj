@@ -13,4 +13,9 @@
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarEx.Core\CarEx.Core.csproj" />
+    <ProjectReference Include="..\CarEx.Web\CarEx.Web.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -10,7 +10,7 @@ namespace CarEx.Business.Services.Concrete
 {
    public class UserService : Repository<User>, IUserService
     {
-        public readonly CarExDbContext _context;
+        private readonly CarExDbContext _context;
         public UserService(CarExDbContext context) : base(context)
         {
             _context = context;

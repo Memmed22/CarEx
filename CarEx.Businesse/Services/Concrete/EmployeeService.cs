@@ -11,7 +11,7 @@ namespace CarEx.Business.Services.Concrete
 {
    public class EmployeeService : Repository<Employee>, IEmployeeService
     {
-        public readonly CarExDbContext _context;
+        private readonly CarExDbContext _context;
         public EmployeeService(CarExDbContext context) : base(context)
         {
             _context = context;

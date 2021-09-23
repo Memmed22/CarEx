@@ -11,7 +11,7 @@ namespace CarEx.Business.Services.Concrete
     public class ParcelService : Repository<Parcel>, IParcelService
     {
 
-        public readonly CarExDbContext _context;
+        private readonly CarExDbContext _context;
         public ParcelService(CarExDbContext context) : base(context)
         {
             

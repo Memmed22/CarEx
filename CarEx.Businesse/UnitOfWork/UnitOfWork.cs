@@ -10,7 +10,7 @@ namespace CarEx.Business.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public readonly CarExDbContext _context;
+        private readonly CarExDbContext _context;
              
         public IEmployeeService Employee { get; private set; }
 
@@ -24,6 +24,8 @@ namespace CarEx.Business.UnitOfWork
 
         public IPackageService Package { get; private set; }
 
+       
+
         public UnitOfWork(CarExDbContext context)
         {
             _context = context;
@@ -33,7 +35,7 @@ namespace CarEx.Business.UnitOfWork
             Shipment = new ShipmentService(context);
             Parcel = new ParcelService(context);
             Package = new PackageService(context);
-
+          
         }
 
         public void Save() {

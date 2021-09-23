@@ -10,7 +10,7 @@ namespace CarEx.Business.Services.Concrete
 {
     public class ShipmentService : Repository<Shipment>, IShipmentService
     {
-        public readonly CarExDbContext _context;
+        private readonly CarExDbContext _context;
 
         public ShipmentService(CarExDbContext context) : base(context)
         {
