@@ -20,6 +20,17 @@ namespace CarEx.xUnitTest
         }
 
         [Fact]
+        public void SendError_ShouldWriteToLogFile_ReturnSentMessage()
+        {
+            //Arrage
+            string model =  "test Message";
+            //Act
+            string message = _sud.SendError(model);
+            //Assert
+            Assert.Equal(model, message);
+        }
+
+        [Fact]
         public void WriteLogCreateJsonFile()
         {
           

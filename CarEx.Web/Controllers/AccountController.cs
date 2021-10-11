@@ -6,7 +6,7 @@ using CarEx.Business.UnitOfWork;
 using CarEx.Core.Log.Business;
 using CarEx.Core.Log.Model;
 using CarEx.Core.Model;
-using CarEx.Core.ViewModel;
+using CarEx.Core.Dto;
 using CarEx.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,107 +24,122 @@ namespace CarEx.Web.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogEngine _logger;
        
-        public AccountController(IUnitOfWork unitOfWork, ILogEngine logger, UserManager<Account> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(IUnitOfWork unitOfWork, ILogEngine logger)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+           
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
-        [HttpPost("UserRegister")]
-        public async Task<IActionResult> UserRegister([FromBody] AccountViewModel accountViewModel) {
+        [HttpPost("RegisterClient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult> RegisterClient([FromBody] AccountDto accountDto) {
             try
             {
-                if (!_roleManager.Roles.Any(u => u.Name == EnumRole.Client.ToString()))
-                    _roleManager.CreateAsync(new IdentityRole { Name = EnumRole.Client.ToString() }).GetAwaiter().GetResult();
+                if (accountDto == null)
+                    return BadRequest(StaticMessages.BadRequestEntityMessage);
+
+                if (!_unitOfWork.Account.GetRoles().Any(u => u.Name == EnumRole.Client.ToString()))
+                    _unitOfWork.Account.CreateRoleAsync(new IdentityRole { Name = EnumRole.Client.ToString() }).GetAwaiter().GetResult();
 
                 Account account = new Account()
                 {
-                    UserName = accountViewModel.UserName,
-                    Password = accountViewModel.Password,
+                    UserName = accountDto.UserName,
+                    Password = accountDto.Password,
                     CreatedOn = DateTime.Now,
                     AccountType = EnumAccountType.USER.ToString()
                 };
 
-                var result = await _userManager.CreateAsync(account, accountViewModel.Password);
+                //  var result = await _userManager.CreateAsync(account, accountDto.Password);
+                var result = await _unitOfWork.Account.CreateAsync(account, accountDto.Password);
                 if (result.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(account, EnumRole.Client.ToString()).GetAwaiter().GetResult();
+                    //_userManager.AddToRoleAsync(account, EnumRole.Client.ToString()).GetAwaiter().GetResult();
+                    _unitOfWork.Account.CreateAsync(account, EnumRole.Client.ToString()).GetAwaiter().GetResult();
 
-                    _unitOfWork.User.Add(new User
+                    _unitOfWork.User.Add(new Client
                     {
                         AccountId = account.Id,
-                        Adress = accountViewModel.Adress,
-                        Email = accountViewModel.UserName,
-                        Name = accountViewModel.Name,
-                        Photo = accountViewModel.Photo,
-                        Surname = accountViewModel.Surname,
-                        TelNo = accountViewModel.TelNo,
-                        ClientCode = accountViewModel.ClientCode,
-                        PersonId = accountViewModel.PersonId,
+                        Adress = accountDto.Adress,
+                        Email = accountDto.UserName,
+                        Name = accountDto.Name,
+                        Photo = accountDto.Photo,
+                        Surname = accountDto.Surname,
+                        TelNo = accountDto.TelNo,
+                        ClientCode = accountDto.ClientCode,
+                        PersonalId = accountDto.PersonId,
                     });
                     _unitOfWork.Save();
                 }
+                else
+                    return UnprocessableEntity(result.Errors);
             }
             catch (Exception ex)
             {
-                _logger.SendError(ex.Message);
+               return Ok(_logger.SendError(ex.Message));
             }
-            return Ok();
+            return Ok(accountDto.UserName);
+
         }
 
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] AccountViewModel accountViewModel)
+        [HttpPost("RegisterEmployee")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult> RegisterEmployee([FromBody] AccountDto accountDto)
         {
             try
             {
-                var roles = _roleManager.Roles.ToList();
+                if (accountDto == null)
+                    return BadRequest(StaticMessages.BadRequestEntityMessage);
+
+                var roles = _unitOfWork.Account.GetRoles();
                 foreach (var item in Enum.GetValues(typeof(EnumRole)).Cast<EnumRole>().ToList())
                 {
                     if (!roles.Any(u => u.Name == item.ToString()))
                     {
-                        _roleManager.CreateAsync(new IdentityRole(item.ToString())).GetAwaiter().GetResult();
+                        _unitOfWork.Account.CreateRoleAsync(new IdentityRole(item.ToString())).GetAwaiter().GetResult();
                     }
                 }
                
                 Account account = new Account()
                 {
-                    UserName = accountViewModel.UserName,
-                    Password = accountViewModel.Password,
+                    UserName = accountDto.UserName,
+                    Password = accountDto.Password,
                     CreatedOn = DateTime.Now,
-                    AccountType = accountViewModel.AccountType
+                    AccountType = accountDto.AccountType
                 };
 
-                var result = await _userManager.CreateAsync(account,accountViewModel.Password);
+                var result = await _unitOfWork.Account.CreateAsync(account, accountDto.Password);
                 if (result.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(account, accountViewModel.Role.ToString()).GetAwaiter();
-                }
+                 _unitOfWork.Account.AddToRoleAsync(account, accountDto.Role.ToString()).GetAwaiter().GetResult();
 
-                if (accountViewModel.AccountType == EnumAccountType.EMPLOYEE.ToString())
-                {
                     Employee employee = new Employee()
                     {
                         AccountId = account.Id,
-                        Adress = accountViewModel.Adress,
-                        Email = accountViewModel.UserName,
-                        Name = accountViewModel.Name,
-                        Photo = accountViewModel.Photo,
-                        Surname = accountViewModel.Surname,
-                        TelNo = accountViewModel.TelNo,
-
+                        Adress = accountDto.Adress,
+                        Email = accountDto.UserName,
+                        Name = accountDto.Name,
+                        Photo = accountDto.Photo,
+                        Surname = accountDto.Surname,
+                        TelNo = accountDto.TelNo,
+                        
                     };
                     _unitOfWork.Employee.Add(employee);
                     _unitOfWork.Save();
                 }
+                else
+                    return UnprocessableEntity(result.Errors);
                 
             }
             catch (Exception ex)
             {
-                _logger.SendError(ex.Message);
+               return Ok(_logger.SendError(ex.Message));
             }
-            return Ok(accountViewModel.UserName);
+            return Ok(accountDto.UserName);
         }
     }
 }

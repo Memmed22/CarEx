@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CarEx.Business.Services.Abstract
 {
-   public interface IUserService : IRepository<User>
+   public interface IClientService : IRepository<Client>
     {
     }
 }

@@ -24,10 +24,9 @@ namespace CarEx.Business.Repository
 
         public void Add(T entity)
         {
-            
+          
             entity.CreatedOn = DateTime.Now;
             
-            //entity.EmployeeId = 1;
             _entities.Add(entity);
         }
 
@@ -85,11 +84,12 @@ namespace CarEx.Business.Repository
         public void Remove(int id)
         {
           
-            _entities.Remove(_entities.Find(id));
+            Remove(_entities.Find(id));
         }
 
         public void Update(T entity)
         {
+            entity.UpdatedOn = DateTime.Now;
             _entities.Update(entity);
         }
     }

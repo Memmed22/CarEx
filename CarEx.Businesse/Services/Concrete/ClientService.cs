@@ -8,10 +8,10 @@ using System.Text;
 
 namespace CarEx.Business.Services.Concrete
 {
-   public class UserService : Repository<User>, IUserService
+   public class ClientService : Repository<Client>, IClientService
     {
         private readonly CarExDbContext _context;
-        public UserService(CarExDbContext context) : base(context)
+        public ClientService(CarExDbContext context) : base(context)
         {
             _context = context;
         }

@@ -29,14 +29,14 @@ namespace CarEx.Core.Model
         public virtual Account Account { get; set; }
 
 
-        public DateTime CreatedOn { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime CreatedOn { get; set ; }
 
         [NotMapped]
-        public string GetCreatedDateString => throw new NotImplementedException();
+        public string GetCreatedDateString => GetShortDateTimeFormat(CreatedOn);
 
-        public DateTime UpdatedOn { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime UpdatedOn { get; set; }
         [NotMapped]
-        public string GetUpdateDateString => throw new NotImplementedException();
+        public string GetUpdateDateString => GetShortDateTimeFormat(UpdatedOn);
 
         readonly EntityUtility abstractEntity = new EntityUtility();
         public string GetShortDateTimeFormat(DateTime dateTime)

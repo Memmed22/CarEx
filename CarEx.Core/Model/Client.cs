@@ -8,7 +8,7 @@ using System.Text;
 
 namespace CarEx.Core.Model
 {
-    public class User : IEntityUtility, IEntity
+    public class Client : IEntityUtility, IEntity
     {
         public int Id { get; set; }
         [StringLength(50)]
@@ -27,7 +27,7 @@ namespace CarEx.Core.Model
         public virtual Account Account { get; set; }
 
         [Required]
-        public string PersonId { get; set; }
+        public string PersonalId { get; set; }
 
         public string ClientCode { get; set; }
         [StringLength(300)]

@@ -4,14 +4,16 @@ using CarEx.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarEx.Data.Migrations
 {
     [DbContext(typeof(CarExDbContext))]
-    partial class CarExDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210925153601_ChangeClientModelName")]
+    partial class ChangeClientModelName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

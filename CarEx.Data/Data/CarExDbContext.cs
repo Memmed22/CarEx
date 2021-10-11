@@ -14,7 +14,7 @@ namespace CarEx.Data.Data
         }
 
         public DbSet<Account> Account { get; set; }
-        public DbSet<User> User { get; set; }
+        public DbSet<Client> User { get; set; }
 
         public DbSet<Employee> Employee { get; set; }
         public DbSet<ShipmentCompany> ShipmentCompany { get; set; }

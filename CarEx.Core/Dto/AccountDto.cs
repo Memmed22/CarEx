@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarEx.Core.ViewModel
+namespace CarEx.Core.Dto
 {
-   public class AccountViewModel : IViewModel
+   public class AccountDto : IDto
     {
         public string UserName { get; set; }
         public string Role { get; set; }

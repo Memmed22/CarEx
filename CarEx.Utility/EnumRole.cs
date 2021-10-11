@@ -6,7 +6,7 @@ namespace CarEx.Utility
     {
         Admin,
         Editor,
-        Client,
-        test
+        Client
+        
     }
 }

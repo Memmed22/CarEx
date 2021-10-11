@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarEx.Core.ViewModel
+namespace CarEx.Core.Dto
 {
-    public interface IViewModel
+    public interface IDto
     {
     }
 }

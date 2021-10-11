@@ -8,12 +8,14 @@ namespace CarEx.Business.UnitOfWork
     public interface IUnitOfWork : IDisposable
     {
         public IEmployeeService Employee { get; }
-        public IUserService User { get; }
+        public IClientService User { get; }
 
         public IShipmentCompanyService ShipmentCompany { get; }
         public IShipmentService Shipment { get; }
         public IParcelService Parcel { get; }
         public IPackageService Package { get; }
+
+        public IAccountService Account { get;  }
 
         public void Save();
     }

@@ -15,7 +15,7 @@ namespace CarEx.Core.Model
         [Required]
         public int UserId { get; set; }
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual Client User { get; set; }
 
 
         public string Invoice { get; set; }
